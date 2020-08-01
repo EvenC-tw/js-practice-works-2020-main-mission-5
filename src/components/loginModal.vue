@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     handleLogin() {
-      apis.login(this.loginForm, (res) => {
+      apis.login(this.loginForm).then((res) => {
         this.$emit('getLoginData', res);
         this.$bus.$emit('productList.updateIsModalShow', false);
       });

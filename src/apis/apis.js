@@ -9,6 +9,22 @@ const apis = {
       data,
     });
   },
+  checkLogin() {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hex-token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    return request({
+      url: 'auth/check',
+      method: 'post',
+      data: { api_token: token },
+    });
+  },
+  logout() {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hex-token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    return request({
+      url: 'auth/logout',
+      method: 'post',
+      data: { api_token: token },
+    });
+  },
   // products
   getProducts(data) {
     return request({

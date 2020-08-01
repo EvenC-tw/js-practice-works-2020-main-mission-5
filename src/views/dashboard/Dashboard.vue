@@ -3,6 +3,9 @@
     <div id="nav">
       <router-link to="/admin/products">商品列表</router-link> |
       <router-link to="/admin/coupons">優惠券</router-link>
+      <span :v-if="loginData.status">
+        | <button type="button" class="btn btn-outline-danger" @click.prevent="logout">登出</button>
+      </span>
     </div>
     <router-view name="products" />
     <login-modal @getLoginData="setLoginData" :login-status="loginData.status"></login-modal>
@@ -11,24 +14,51 @@
 
 <script>
 import LoginModal from '@/components/loginModal.vue';
+import '@/styles/dashboard/custom.scss';
+import apis from '@/apis/apis';
 
 export default {
   components: { 'login-modal': LoginModal },
   data() {
     return {
+      loginData: {
+        status: false,
+        expired: null,
+        token: '',
+      },
       isModalShow: false,
-      loginStatus: false,
     };
   },
   created() {
     this.$bus.$on('dashboard.updateIsModalShow', this.updateIsModalShow);
-    if (this.loginStatus) {
-      // this.getProductList();
-    }
+    apis.checkLogin().then((res) => {
+      const { success } = res;
+      this.loginData.status = success;
+      if (this.loginData.status) {
+        this.$router.push('/admin/products');
+      } else {
+        this.$router.push('/admin');
+      }
+    });
   },
   methods: {
     updateIsModalShow(data) {
       this.isModalShow = data;
+    },
+    setLoginData(data) {
+      const { success } = data;
+      if (!success) return;
+      this.loginData.status = success;
+      this.$router.push('/admin/products');
+    },
+    logout() {
+      apis.logout().then((res) => {
+        const { success } = res;
+        if (success) {
+          this.loginData.status = !success;
+          this.$router.push('/admin');
+        }
+      });
     },
   },
 };

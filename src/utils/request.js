@@ -1,32 +1,49 @@
 import axios from 'axios';
-// import { getToken, } from '@/utils/auth'
+
 const uuid = process.env.VUE_APP_UUID;
+const baseURL = process.env.VUE_APP_BASE_API;
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  baseURL,
 });
 
-// request interceptor
 service.interceptors.request.use(
   (config) => {
     const configWrapper = { ...config };
-    // do something before request is sent
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)Hex-Token\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)hex-token\s*=\s*([^;]*).*$)|^.*$/, '$1');
     if (token) {
-      configWrapper.headers['Hex-Token'] = token;
+      configWrapper.headers['hex-token'] = token;
     }
     return configWrapper;
   },
   (error) => {
-    // do something with request error
-    console.log(error); // for debug
+    console.log(error);
     return Promise.reject(error);
   },
 );
 
-service.interceptors.response.use((response) => {
-  // eslint-disable-next-line
-  response;
-});
+service.interceptors.response.use(
+  (response) => {
+    const {
+      config: { url },
+      data,
+      status,
+    } = response;
+    if (url === 'auth/login' && status === 200 && data.success) {
+      const { token, expired } = data;
+      service.interceptors.request.use((config) => ({
+        ...config,
+        headers: { ...config.headers, 'hex-token': data.token },
+        common: { ...config.common, Authorization: `Bearer ${token}` },
+      }));
+      document.cookie = `hex-token=${token};expires=${new Date(expired * 1000)}; path=/`;
+    }
+    return data;
+  },
+  (error) => {
+    console.log(`err${error}`);
+    return Promise.reject(error);
+  },
+);
 
 // const uuid = process.env.VUE_APP_UUID;
 // const proxies = {
@@ -44,7 +61,7 @@ service.interceptors.response.use((response) => {
 //       switch (err.response.status) {
 //         case 401:
 //           document.cookie = 'token=;expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/';
-//           service.config.headers.add Authorization', `Bearer ${token}`);
+//           service.config.headers.add('Authorization', '');
 //           location.reload();
 //           break;
 //         default:
