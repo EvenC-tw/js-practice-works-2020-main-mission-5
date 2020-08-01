@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0bdcec"],{"2e25":function(n,e,t){"use strict";t.r(e);var c=function(){var n=this,e=n.$createElement;n._self._c;return n._m(0)},u=[function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",[t("h2",[n._v("管理後台的優惠券頁面")])])}],r={data:function(){return{coupons:[]}}},a=r,l=t("2877"),o=Object(l["a"])(a,c,u,!1,null,null,null);e["default"]=o.exports}}]);
+//# sourceMappingURL=chunk-2d0bdcec.0b2726d7.js.map

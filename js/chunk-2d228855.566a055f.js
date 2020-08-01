@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d228855"],{da13:function(n,t,e){"use strict";e.r(t);var r=function(){var n=this,t=n.$createElement;n._self._c;return n._m(0)},u=[function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",[e("h2",[n._v("單一產品頁")])])}],c={data:function(){return{products:[]}}},a=c,l=e("2877"),s=Object(l["a"])(a,r,u,!1,null,null,null);t["default"]=s.exports}}]);
+//# sourceMappingURL=chunk-2d228855.566a055f.js.map

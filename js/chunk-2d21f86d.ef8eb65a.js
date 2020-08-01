@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d21f86d"],{d9ce:function(t,n,r){"use strict";r.r(n);var e=function(){var t=this,n=t.$createElement,r=t._self._c||n;return r("div",[r("div",{attrs:{id:"nav"}},[r("router-link",{attrs:{to:"/products"}},[t._v("產品列表")]),t._v(" | "),r("router-link",{attrs:{to:"/cart"}},[t._v("購物車")])],1)])},u=[],a={data:function(){return{}}},c=a,o=r("2877"),i=Object(o["a"])(c,e,u,!1,null,null,null);n["default"]=i.exports}}]);
+//# sourceMappingURL=chunk-2d21f86d.ef8eb65a.js.map
