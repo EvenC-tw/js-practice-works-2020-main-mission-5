@@ -5,6 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "postbuild": "cd dist && git init && git add -A && git commit -m 'deploy' && git push -f git@github.com:EvenC-tw/js-practice-works-2020-main-mission-5.git master:gh-pages && cd ..",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

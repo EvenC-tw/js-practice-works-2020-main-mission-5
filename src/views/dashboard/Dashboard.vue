@@ -1,21 +1,23 @@
 <template>
   <div>
     <div id="nav">
-      <router-link to="/admin/products">商品列表</router-link> |
-      <router-link to="/admin/coupons">優惠券</router-link>
+      <router-link :to="{ name: 'admin.products' }">商品列表</router-link>
+      |
+      <router-link :to="{ name: 'admin.coupons' }">優惠券</router-link>
       <span :v-if="loginData.status">
-        | <button type="button" class="btn btn-outline-danger" @click.prevent="logout">登出</button>
+        |
+        <button type="button" class="btn btn-outline-danger" @click.prevent="logout">登出</button>
       </span>
     </div>
-    <router-view name="products" />
+    <router-view :loginData="loginData" />
     <login-modal @getLoginData="setLoginData" :login-status="loginData.status"></login-modal>
   </div>
 </template>
 
 <script>
-import LoginModal from '@/components/loginModal.vue';
 import '@/styles/dashboard/custom.scss';
 import apis from '@/apis/apis';
+import LoginModal from '@/components/LoginModal.vue';
 
 export default {
   components: { 'login-modal': LoginModal },
@@ -35,9 +37,9 @@ export default {
       const { success } = res;
       this.loginData.status = success;
       if (this.loginData.status) {
-        this.$router.push('/admin/products');
+        this.$router.push({ name: 'admin.products' });
       } else {
-        this.$router.push('/admin');
+        this.$router.push({ name: 'admin' });
       }
     });
   },
@@ -49,14 +51,14 @@ export default {
       const { success } = data;
       if (!success) return;
       this.loginData.status = success;
-      this.$router.push('/admin/products');
+      this.$router.push({ name: 'admin.products' });
     },
     logout() {
       apis.logout().then((res) => {
         const { success } = res;
         if (success) {
           this.loginData.status = !success;
-          this.$router.push('/admin');
+          this.$router.push({ name: 'admin' });
         }
       });
     },

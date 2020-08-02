@@ -14,33 +14,33 @@
         <div class="modal-body">
           <form>
             <div class="form-group">
-              <label for="email">Email</label>
+              <label for="email" class="w-100 text-left">信箱</label>
               <input
                 id="email"
                 v-model="loginForm.email"
                 class="form-control"
                 type="text"
                 name=""
-                placeholder="login email here!"
+                placeholder="請輸入email"
                 required
               />
             </div>
             <div class="form-group">
-              <label for="password">Password</label>
+              <label for="password" class="w-100 text-left">密碼</label>
               <input
                 id="password"
                 v-model="loginForm.password"
                 class="form-control"
                 type="password"
                 name=""
-                placeholder="login password here!"
+                placeholder="請輸入密碼"
                 required
               />
             </div>
           </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" @click="handleLogin">Login</button>
+          <button type="button" class="btn btn-primary" @click="handleLogin">登入</button>
         </div>
       </div>
     </div>
@@ -57,7 +57,7 @@ export default {
       modal: {
         enable: null,
         enableClass: 'show d-block login-modal',
-        title: 'Welcome Admin Dashboard',
+        title: '後台登入',
         type: '',
       },
       loginForm: {
@@ -70,18 +70,18 @@ export default {
     handleLogin() {
       apis.login(this.loginForm).then((res) => {
         this.$emit('getLoginData', res);
-        this.$bus.$emit('productList.updateIsModalShow', false);
+        this.$bus.$emit('dashboard.updateIsModalShow', false);
       });
     },
   },
   created() {
     this.modal.enable = !this.loginStatus;
-    this.$bus.$emit('productList.updateIsModalShow', this.modal.enable);
+    this.$bus.$emit('dashboard.updateIsModalShow', this.modal.enable);
   },
   watch: {
     loginStatus(curr) {
       this.modal.enable = !curr;
-      this.$bus.$emit('productList.updateIsModalShow', this.modal.enable);
+      this.$bus.$emit('dashboard.updateIsModalShow', this.modal.enable);
     },
   },
 };

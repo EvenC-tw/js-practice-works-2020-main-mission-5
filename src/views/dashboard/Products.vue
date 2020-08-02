@@ -1,10 +1,10 @@
 <template>
-  <div :class="[isModalShow ? 'opa-50' : '', 'container-fluid py-5']">
+  <div>
     <button type="button" class="btn btn-primary float-right" @click="editProduct('create')">
       Create
     </button>
+    <h1 class="text-left">List of Products</h1>
     <table class="table">
-      <h1>List of Products</h1>
       <thead class="thead-dark">
         <tr>
           <th>Category</th>
@@ -80,14 +80,23 @@
         </li>
       </ul>
     </nav>
+    <product-modal
+      :showProductModal="showProductModal"
+      :tempProduct="tempProduct"
+      @closeModal="closeProductModal"
+      @createProduct="createProduct"
+      @updateProduct="updateProduct"
+    ></product-modal>
   </div>
 </template>
 
 <script>
 import apis from '@/apis/apis';
+import ProductModal from '@/components/ProductModal.vue';
 
 export default {
-  props: ['uuid', 'loginStatus'],
+  props: ['loginData'],
+  components: { 'product-modal': ProductModal },
   data() {
     return {
       products: [],
@@ -99,20 +108,14 @@ export default {
         total_pages: 1,
         links: {},
       },
-      isModalShow: false,
+      showProductModal: { enable: false, type: null, title: '' },
+      tempProduct: {},
     };
   },
-  created() {
-    this.$bus.$on('products.createProduct', this.createProduct);
-    this.$bus.$on('products.updateIsModalShow', this.updateIsModalShow);
-    this.$bus.$on('products.updateProduct', this.updateProduct);
-    if (!this.loginStatus) {
-      this.getProducts();
-    }
-  },
+  created() {},
   methods: {
     getProducts(page = 1) {
-      apis.getProducts({ page }, (res) => {
+      apis.getProducts({ page }).then((res) => {
         if (res.data) this.products = res.data;
         if (res.meta && res.meta.pagination) this.pagination = res.meta.pagination;
       });
@@ -123,11 +126,11 @@ export default {
       });
     },
     getProduct(id, callback) {
-      apis.getProduct({ id }, callback);
+      apis.getProduct({ id }).then(callback);
     },
     editProduct(type, id) {
       let title = '';
-      let tempProduct = { imageUrl: [] };
+      const tempProduct = { imageUrl: [] };
       const newId = new Date().getTime();
       switch (type) {
         case 'create':
@@ -138,16 +141,20 @@ export default {
         case 'edit':
           title = 'Edit Product';
           this.getProduct(id, (res) => {
-            tempProduct = res.data;
-            this.updateShowModalData({ type, title, tempProduct });
+            this.tempProduct = res.data;
+            this.showProductModal = {
+              enable: true,
+              type,
+              title,
+            };
           });
           break;
         default:
           break;
       }
     },
-    updateProduct(data) {
-      apis.updateProduct(data, () => {
+    updateProduct() {
+      apis.updateProduct(this.tempProduct).then(() => {
         this.getProducts();
       });
     },
@@ -156,20 +163,19 @@ export default {
         this.getProducts();
       });
     },
-    updateShowModalData(data) {
-      const { type, title, tempProduct } = data;
-      this.$bus.$emit('productModal.showModal', { type, title });
-      this.$bus.$emit('productModal.updateTempProduct', tempProduct);
-    },
-    updateIsModalShow(data) {
-      this.isModalShow = data;
+    closeProductModal(data) {
+      this.showProductModal = data;
     },
   },
   watch: {
-    loginStatus(curr) {
-      if (curr) {
-        this.getProducts();
-      }
+    loginData: {
+      immediate: true,
+      deep: true,
+      handler(curr) {
+        if (curr.status) {
+          this.getProducts();
+        }
+      },
     },
   },
 };

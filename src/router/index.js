@@ -1,49 +1,65 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+// client
+import cart from '@/views/layout/Cart.vue';
+import layout from '@/views/layout/Layout.vue';
+import product from '@/views/layout/Product.vue';
+import products from '@/views/layout/Products.vue';
+
+// admin
+import adminCoupons from '@/views/dashboard/Coupons.vue';
+import adminProducts from '@/views/dashboard/Products.vue';
+import dashboard from '@/views/dashboard/Dashboard.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
     name: 'Layout',
-    component: () => import('../views/layout/Layout.vue'),
+    component: layout,
     children: [
       {
         path: 'products',
         name: 'products',
-        component: () => import('../views/layout/Products.vue'),
+        component: products,
       },
       {
         path: 'product/:id',
         name: 'product',
-        component: () => import('../views/layout/Product.vue'),
+        component: product,
       },
       {
         path: 'cart',
         name: 'cart',
-        component: () => import('../views/layout/Cart.vue'),
+        component: cart,
       },
     ],
   },
   {
     path: '/admin',
     name: 'Dashboard',
-    component: () => import('../views/dashboard/Dashboard.vue'),
+    component: dashboard,
     children: [
       {
         path: 'products',
         name: 'admin.products',
-        component: () => import('../views/dashboard/Products.vue'),
+        component: adminProducts,
       },
       {
         path: 'coupons',
         name: 'admin.coupons',
-        component: () => import('../views/dashboard/Coupons.vue'),
+        component: adminCoupons,
       },
     ],
   },
 ];
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
+};
 
 const router = new VueRouter({
   routes,

@@ -12,6 +12,7 @@ service.interceptors.request.use(
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)hex-token\s*=\s*([^;]*).*$)|^.*$/, '$1');
     if (token) {
       configWrapper.headers['hex-token'] = token;
+      configWrapper.headers.Authorization = `Bearer ${token}`;
     }
     return configWrapper;
   },

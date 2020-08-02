@@ -48,11 +48,11 @@ const apis = {
     });
   },
   updateProduct(data) {
-    const { id, tempProduct } = data;
+    const { id } = data;
     return request({
       url: `${uuid}/admin/ec/product/${id}`,
       method: 'patch',
-      data: tempProduct,
+      data,
     });
   },
   deleteProduct(data) {
