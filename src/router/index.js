@@ -1,56 +1,45 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-// client
-import cart from '@/views/layout/Cart.vue';
-import layout from '@/views/layout/Layout.vue';
-import product from '@/views/layout/Product.vue';
-import products from '@/views/layout/Products.vue';
-
-// admin
-import adminCoupons from '@/views/dashboard/Coupons.vue';
-import adminProducts from '@/views/dashboard/Products.vue';
-import dashboard from '@/views/dashboard/Dashboard.vue';
-
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
     name: 'Layout',
-    component: layout,
+    component: () => import('@/views/layout/Layout.vue'),
     children: [
       {
         path: 'products',
-        name: 'products',
-        component: products,
+        name: 'Products',
+        component: () => import('@/views/layout/Products.vue'),
       },
       {
         path: 'product/:id',
-        name: 'product',
-        component: product,
+        name: 'Product',
+        component: () => import('@/views/layout/Product.vue'),
       },
       {
         path: 'cart',
-        name: 'cart',
-        component: cart,
+        name: 'Cart',
+        component: () => import('@/views/layout/Cart.vue'),
       },
     ],
   },
   {
     path: '/admin',
     name: 'Dashboard',
-    component: dashboard,
+    component: () => import('@/views/dashboard/Dashboard.vue'),
     children: [
       {
         path: 'products',
-        name: 'admin.products',
-        component: adminProducts,
+        name: 'Products',
+        component: () => import('@/views/dashboard/Products.vue'),
       },
       {
         path: 'coupons',
-        name: 'admin.coupons',
-        component: adminCoupons,
+        name: 'Coupons',
+        component: () => import('@/views/dashboard/Coupons.vue'),
       },
     ],
   },

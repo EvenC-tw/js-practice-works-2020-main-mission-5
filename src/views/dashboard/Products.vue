@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import apis from '@/apis/apis';
+import apis from '@/apis/modules/admin';
 import ProductModal from '@/components/ProductModal.vue';
 
 export default {
@@ -120,8 +120,8 @@ export default {
         if (res.meta && res.meta.pagination) this.pagination = res.meta.pagination;
       });
     },
-    createProduct(tempProduct) {
-      apis.createProduct(tempProduct, () => {
+    createProduct() {
+      apis.createProduct(this.tempProduct).then(() => {
         this.getProducts();
       });
     },

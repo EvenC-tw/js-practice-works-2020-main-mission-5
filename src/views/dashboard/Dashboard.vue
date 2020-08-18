@@ -15,8 +15,7 @@
 </template>
 
 <script>
-import '@/styles/dashboard/custom.scss';
-import apis from '@/apis/apis';
+import apis from '@/apis/modules/admin';
 import LoginModal from '@/components/LoginModal.vue';
 
 export default {

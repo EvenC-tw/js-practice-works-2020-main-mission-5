@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import apis from '@/apis/apis';
+import apis from '@/apis/modules/admin';
 
 export default {
   props: ['loginStatus'],

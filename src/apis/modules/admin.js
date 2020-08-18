@@ -1,5 +1,6 @@
-import { service as request, uuid } from '../utils/request';
+import { service as request, uuid } from '@/utils/request';
 
+const apiBase = `${uuid}/admin/ec/`;
 const apis = {
   // user
   login(data) {
@@ -28,14 +29,14 @@ const apis = {
   // products
   getProducts(data) {
     return request({
-      url: `${uuid}/admin/ec/products`,
+      url: `${apiBase}products`,
       method: 'get',
       params: data,
     });
   },
   createProduct(data) {
     return request({
-      url: `${uuid}/admin/ec/product`,
+      url: `${apiBase}product`,
       method: 'post',
       data,
     });
@@ -43,14 +44,14 @@ const apis = {
   getProduct(data) {
     const { id } = data;
     return request({
-      url: `${uuid}/admin/ec/product/${id}`,
+      url: `${apiBase}product/${id}`,
       method: 'get',
     });
   },
   updateProduct(data) {
     const { id } = data;
     return request({
-      url: `${uuid}/admin/ec/product/${id}`,
+      url: `${apiBase}product/${id}`,
       method: 'patch',
       data,
     });
@@ -58,7 +59,7 @@ const apis = {
   deleteProduct(data) {
     const { id } = data;
     return request({
-      url: `${uuid}/admin/ec/product/${id}`,
+      url: `${apiBase}product/${id}`,
       method: 'delete',
     });
   },

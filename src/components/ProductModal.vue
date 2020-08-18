@@ -141,7 +141,6 @@ module.exports = {
         title: '',
         type: '',
       },
-      //   product: {}
     };
   },
   created() {},
@@ -152,24 +151,15 @@ module.exports = {
         this.$bus.$emit('dashboard.updateIsModalShow', curr.enable);
       },
     },
-    // tempProduct: {
-    //   deep: true,
-    //   handler(curr) {
-    //     this.product = { ...curr };
-    //   }
-    // }
   },
   methods: {
     updateProduct() {
       switch (this.showProductModal.type) {
         case 'create':
-          this.$emit('createProduct', { ...this.tempProduct });
+          this.$emit('createProduct');
           break;
         case 'edit':
-          this.$emit('updateProduct', {
-            id: this.tempProduct.id,
-            tempProduct: { ...this.tempProduct },
-          });
+          this.$emit('updateProduct');
           break;
         default:
           break;
